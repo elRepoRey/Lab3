@@ -19,7 +19,7 @@ namespace Lab3.View
     {        
         private Quiz _originalQuiz;
         
-        public event Action QuizEditCompleted;
+        public event Action? QuizEditCompleted;
 
         private readonly DbService _dbService;
         private QuizService _quizService;

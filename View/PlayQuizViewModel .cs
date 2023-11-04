@@ -16,7 +16,7 @@ namespace Lab3.View
         public Quiz CurrentQuiz { get; }
         public Question CurrentQuestion { get; private set; }
         public int CurrentQuestionIndex { get; private set; }
-        public event Action QuizCompleted;
+        public event Action? QuizCompleted;
         
         public event PropertyChangedEventHandler PropertyChanged;
         public bool IsAnswerSelected => SelectedAnswerIndex.HasValue;
@@ -113,7 +113,7 @@ namespace Lab3.View
                 QuizCompleted?.Invoke();
 
                 
-                QuizCompleted = () => { };
+                QuizCompleted = null;
             }
 
             SelectedAnswerIndex = null; 

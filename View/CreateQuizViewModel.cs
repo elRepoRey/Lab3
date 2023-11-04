@@ -24,7 +24,7 @@ namespace Lab3.View
         private string ImageFileName;
         public Quiz CurrentQuiz { get; private set; }
         public Question CurrentQuestion;      
-        public event Action QuizCreatedCompleted;
+        public event Action? QuizCreatedCompleted;
         private readonly DbService _dbService;
         public bool IsNextQuestionAvailable => CurrentQuestionIndex < CurrentQuiz.Questions.Count() - 1;
         public bool IsPreviousQuestionAvailable => CurrentQuestionIndex > 0;
