@@ -7,17 +7,15 @@
              mc:Ignorable="d"              
              Background="#333333"
              >
-    <!-- Darkish background color -->
-
     <Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <!-- Quizzes button -->
+           
             <Button Content="Quizzes" Background="Transparent" BorderThickness="0" Foreground="White" Command="{Binding NavigateCommand}" CommandParameter="{x:Static local:EnumNavbarItems.Quizzes}" Margin="10,0"/>
 
-            <!-- Create Quiz button -->
+            
             <Button Content="Create Quiz" Background="Transparent" BorderThickness="0" Foreground="White" Command="{Binding NavigateCommand}" CommandParameter="{x:Static local:EnumNavbarItems.CreateQuiz}" Margin="10,0"/>
 
-            <!-- Generate Quiz button -->
+        
             <Button Content="Generate Quiz" Background="Transparent" BorderThickness="0" Foreground="White" Command="{Binding NavigateCommand}" CommandParameter="{x:Static local:EnumNavbarItems.GenerateQuiz}" Margin="10,0"/>
         </StackPanel>
     </Grid>

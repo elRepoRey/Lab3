@@ -35,7 +35,7 @@
  
      
 
-        <!-- ListView Item Margin and Hover Effect -->
+        <!-- ListView  -->
         <Style TargetType="ListViewItem">
             <Setter Property="Margin" Value="0,20,0,10" />
             <Setter Property="Template">

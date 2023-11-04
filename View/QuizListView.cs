@@ -30,8 +30,7 @@ namespace Lab3.View
             EditCommand = new RelayCommand<string>(title => EditQuizRequested?.Invoke(this, title));
             DeleteComand = new RelayCommand<string>(title => DeleteQuizRequested?.Invoke(this, title));
 
-    }
-
+        }
 
         public ICommand PlayCommand { get; }
         public ICommand EditCommand { get; }

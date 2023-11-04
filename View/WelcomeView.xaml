@@ -12,8 +12,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-        <!-- Welcome Message with Accent Border -->
+  
         <Border Background="#007ACC" Grid.Row="0" CornerRadius="10" Margin="0,0,0,20">
             <TextBlock Text="Welcome to MyQuiz!" 
                        HorizontalAlignment="Center" 
@@ -28,7 +27,7 @@
                     HorizontalAlignment="Center" 
                     VerticalAlignment="Center" 
                     Orientation="Vertical">
-            <!-- Stylish Subtitles with Icons -->
+            
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
 
                 <TextBlock Text="To play or edit quizzes, go to 'Quizzes'." 
@@ -61,8 +60,7 @@
                            Foreground="#007ACC" 
                            Margin="10"/>
             </StackPanel>
-
-            <!-- Decorative Border -->
+            
             <Border Background="#007ACC" Height="2" Margin="50,20" HorizontalAlignment="Stretch"/>
 
             <TextBlock Text="Get started by selecting an option from the navigation bar." 

@@ -21,7 +21,7 @@ namespace Lab3.View
         public event Action PlayGeneratedQuiz;
         public ObservableCollection<string> SelectedCategories { get; set; } = new ObservableCollection<string>();
 
-        public List<int> NumberOfQuestionsOptions { get; } = new List<int> { 5, 10, 25,50 };
+        public List<int> NumberOfQuestionsOptions { get; } = new List<int> { 5, 10, 25};
         public ICommand PlayGeneratedQuizCommand { get; private set; }
         private IAsyncEnumerable<List<Question>> AllQuestions { get; set; }
 

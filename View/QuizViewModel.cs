@@ -93,8 +93,6 @@ namespace Lab3.View
             }
         }
 
-
-
         private void UpdateQuizList()
         {
               

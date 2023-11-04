@@ -90,9 +90,7 @@ namespace Lab3.View
             CurrentQuiz = Global.CurrentQuiz;
             CurrentQuestionIndex = 0;
             LoadQuestion();
-            NextQuestionCommand = new RelayCommand(NextQuestion);
-                         
-            
+            NextQuestionCommand = new RelayCommand(NextQuestion);     
         }
 
         public void NextQuestion()

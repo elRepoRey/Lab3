@@ -222,7 +222,7 @@ namespace Lab3.View
             await _dbService.WriteData(quizDAO, QuizTitle);
             MessageBox.Show("Quiz saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             QuizCreatedCompleted?.Invoke();
-            CurrentQuiz = new Quiz();           
+            CurrentQuiz = new Quiz();          
             
         }
    
@@ -238,8 +238,7 @@ namespace Lab3.View
                 else
                 {
                     ClearQuestionData();
-                    CurrentQuestionIndex++;
-                    
+                    CurrentQuestionIndex++;                    
                 }
                
             }
@@ -301,8 +300,7 @@ namespace Lab3.View
             CanSaveQuiz = true;       
            
             ClearQuestionData();
-            CurrentQuestionIndex++;
-            
+            CurrentQuestionIndex++;            
 
         }
         private void ClearQuestionData()
@@ -324,8 +322,7 @@ namespace Lab3.View
             Answers = CurrentQuestion.Answers.ToList();
             CorrectAnswer = CurrentQuestion.CorrectAnswer;
             Category = CurrentQuestion.Category;      
-            ImagePath = Path.Combine(ImageTargetFolder, CurrentQuestion.ImageFileName);
-            
+            ImagePath = Path.Combine(ImageTargetFolder, CurrentQuestion.ImageFileName);            
         }
 
         private void BrowseImage()

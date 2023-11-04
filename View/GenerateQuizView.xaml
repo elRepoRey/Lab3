@@ -61,7 +61,7 @@
             <RadioButton x:Name="ByCategoryRadioButton" Content="By Category" Style="{StaticResource RadioStyle}" IsChecked="{Binding IsByCategorySelected, Mode=TwoWay}" GroupName="SelectionGroup"/>
         </StackPanel>
 
-        <!-- Number of Questions Label and Selector -->
+        <!-- Number of Questions -->
         <Label Content="Max Number of Questions" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Margin="20,30,0,0"/>
         <ComboBox x:Name="QuestionsCountCombo" Grid.Row="2" Grid.Column="0" Width="120" HorizontalAlignment="Left" Margin="250,30,10,10" 
               ItemsSource="{Binding NumberOfQuestionsOptions}"

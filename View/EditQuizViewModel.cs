@@ -205,6 +205,11 @@ namespace Lab3.View
                 _dbService.DeleteData(_originalQuiz.Title); 
             }            
 
+            if(QuizTitle != _originalQuiz.Title)
+            {
+                _dbService.DeleteData(_originalQuiz.Title);
+            }
+
             await _dbService.WriteData(quizDAO, QuizTitle);           
 
            
