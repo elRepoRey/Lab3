@@ -9,7 +9,8 @@
              >
     <Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-           
+            <Button Content="Welcome" Background="Transparent" BorderThickness="0" Foreground="White" Command="{Binding NavigateCommand}" CommandParameter="{x:Static local:EnumNavbarItems.Welcome}" Margin="10,0"/>
+
             <Button Content="Quizzes" Background="Transparent" BorderThickness="0" Foreground="White" Command="{Binding NavigateCommand}" CommandParameter="{x:Static local:EnumNavbarItems.Quizzes}" Margin="10,0"/>
 
             

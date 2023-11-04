@@ -59,9 +59,11 @@ namespace Lab3.View
                     break;
                 case EnumNavbarItems.GenerateQuiz:                    
                     GenerateQuizViewModel generateQuizViewModel = new GenerateQuizViewModel();
-                    generateQuizViewModel.PlayGeneratedQuiz += HandleOnPlayGeneratedQuiz;
-                    
+                    generateQuizViewModel.PlayGeneratedQuiz += HandleOnPlayGeneratedQuiz;                    
                     CurrentView = new GenerateQuizView(generateQuizViewModel);
+                    break;
+                case EnumNavbarItems.Welcome:
+                    CurrentView = new WelcomeView();
                     break;
             }   
         }
