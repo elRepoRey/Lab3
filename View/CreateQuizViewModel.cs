@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -17,6 +18,7 @@ namespace Lab3.View
     public class CreateQuizViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly QuizService _quizService = new QuizService();
         public string ImageTargetFolder { get; private set; }
 
         private string ImageFileName;
@@ -195,34 +197,49 @@ namespace Lab3.View
 
         private async void SaveQuiz()
         {
-            if (string.IsNullOrEmpty(QuizTitle))
+            try
             {
-                MessageBox.Show("Please enter a title for the quiz.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            var quizDAO = new QuizDAO
-            {
-                Title = QuizTitle,
-                Questions = CurrentQuiz.Questions.ToList()
-            }; 
-            
-            List<string> Files = new List<string>();
-            Files = _dbService.GetAllQuizTitles();
-
-            foreach (var file in Files)
-            {
-                
-                if (file.Equals(QuizTitle, StringComparison.OrdinalIgnoreCase))
+                if (string.IsNullOrEmpty(QuizTitle))
                 {
-                    MessageBox.Show("Quiz with this title already exists. Edit the existing quiz or choose a different title.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Please enter a title for the quiz.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-            }
+                if (!_quizService.IsValidFilename(QuizTitle))
+                {
+                    MessageBox.Show("The quiz title is not a valid filename.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                var quizDAO = new QuizDAO
+                {
+                    Title = QuizTitle,
+                    Questions = CurrentQuiz.Questions.ToList()
+                };
 
-            await _dbService.WriteData(quizDAO, QuizTitle);
-            MessageBox.Show("Quiz saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            QuizCreatedCompleted?.Invoke();
-            CurrentQuiz = new Quiz();          
+                List<string> Files = new List<string>();
+                Files = _dbService.GetAllQuizTitles();
+
+                foreach (var file in Files)
+                {
+
+                    if (file.Equals(QuizTitle, StringComparison.OrdinalIgnoreCase))
+                    {
+                        MessageBox.Show("Quiz with this title already exists. Edit the existing quiz or choose a different title.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                }
+
+                await _dbService.WriteData(quizDAO, QuizTitle);
+
+                MessageBox.Show("Quiz saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                QuizCreatedCompleted?.Invoke();
+                CurrentQuiz = new Quiz();
+                QuizCreatedCompleted = null;
+            }
+            catch ( Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+              
             
         }
    
@@ -284,56 +301,79 @@ namespace Lab3.View
                     {
                         var targetPath = Path.Combine(ImageTargetFolder, Path.GetFileName(targetFileName));
 
-                        File.Copy(ImagePath, targetPath, overwrite: true);
+                        _dbService.CopyFile(ImagePath, targetPath);
                     }
                 }
 
+                MessageBox.Show("Question updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                CanSaveQuiz = true;
+
+                ClearQuestionData();
+                CurrentQuestionIndex++;
 
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            
-            MessageBox.Show("Question updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            
-            CanSaveQuiz = true;       
-           
-            ClearQuestionData();
-            CurrentQuestionIndex++;            
-
+                return;
+            }   
         }
         private void ClearQuestionData()
         {
-            QuestionStatement = string.Empty;
-            Answers = new[] { " ", " ", " " }.ToList();
-            CorrectAnswer = 0;
-            Category = string.Empty;
-            HasQuestions = false;
-            CanSaveQuestion = true;
-            ImagePath = Path.Combine(ImageTargetFolder, "PlaceholderImage.png");
+            try
+            {
+                QuestionStatement = string.Empty;
+                Answers = new[] { " ", " ", " " }.ToList();
+                CorrectAnswer = 0;
+                Category = string.Empty;
+                HasQuestions = false;
+                CanSaveQuestion = true;
+                ImagePath = Path.Combine(ImageTargetFolder, "PlaceholderImage.png");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
         }
 
         private void UpdateQuizData()
         {
-            CurrentQuestion = CurrentQuiz.Questions.ElementAt(_currentQuestionIndex);
-            QuestionStatement = CurrentQuestion.Statement;
-            Answers = CurrentQuestion.Answers.ToList();
-            CorrectAnswer = CurrentQuestion.CorrectAnswer;
-            Category = CurrentQuestion.Category;      
-            ImagePath = Path.Combine(ImageTargetFolder, CurrentQuestion.ImageFileName);            
+            try
+            {
+                CurrentQuestion = CurrentQuiz.Questions.ElementAt(_currentQuestionIndex);
+                QuestionStatement = CurrentQuestion.Statement;
+                Answers = CurrentQuestion.Answers.ToList();
+                CorrectAnswer = CurrentQuestion.CorrectAnswer;
+                Category = CurrentQuestion.Category;
+                ImagePath = Path.Combine(ImageTargetFolder, CurrentQuestion.ImageFileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
         }
 
         private void BrowseImage()
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image files (*.png;*.jpeg;*.jpg;*.bmp)|*.png;*.jpeg;*.jpg;*.bmp";
-            if (openFileDialog.ShowDialog() == true)
+        {   
+            try
+            { 
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Image files (*.png;*.jpeg;*.jpg;*.bmp)|*.png;*.jpeg;*.jpg;*.bmp";
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    TempImagePath = openFileDialog.FileName;
+                    ImageFileName = Path.GetFileName(TempImagePath);
+                    ImagePath = TempImagePath;
+                }
+            }
+            catch (Exception ex)
             {
-                TempImagePath = openFileDialog.FileName;
-                ImageFileName = Path.GetFileName(TempImagePath);
-                ImagePath = TempImagePath;
+                   MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
         }
     }

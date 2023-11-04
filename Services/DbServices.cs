@@ -37,12 +37,22 @@ namespace Lab3.Services
 
         private string GetFilePath(string title)
         {
+            try 
+            { 
             string fileName = $"{title}.json";
             return Path.Combine(MainDirectoryPath, fileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
         }
 
         public async Task<QuizDAO> ReadData(string title)
         {
+            try
+            { 
             string filePath = GetFilePath(title);
 
             if (File.Exists(filePath))
@@ -56,11 +66,19 @@ namespace Lab3.Services
                 }
             }
             return default;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
         }
 
 
         public async Task WriteData(QuizDAO data, string title)
         {
+            try 
+            {             
             var json = JsonConvert.SerializeObject(data, Formatting.Indented);
             string filePath = GetFilePath(title);
 
@@ -68,10 +86,16 @@ namespace Lab3.Services
             {
                 await writer.WriteAsync(json);
             }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public async IAsyncEnumerable<List<Question>> GetAllQuestionsAsync()
         {
+           
             var files = Directory.GetFiles(MainDirectoryPath, "*.json");
 
             foreach (var file in files)
@@ -87,11 +111,14 @@ namespace Lab3.Services
                     }
                 }
             }
+           
         }
 
 
         public List<string> GetAllQuizTitles()
         {
+            try
+            { 
             var files = Directory.GetFiles(MainDirectoryPath, "*.json");
             var titles = new List<string>();
 
@@ -101,11 +128,18 @@ namespace Lab3.Services
             }
 
             return titles;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
         }
 
         public async Task SeedFromData()
         {
-            
+            try
+            {             
             if (!Directory.EnumerateFiles(MainDirectoryPath, "*.json").Any())
             {
                 if (File.Exists(SeedDataPath))
@@ -131,24 +165,44 @@ namespace Lab3.Services
                     }
                 }
             }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private string SanitizeFileName(string title)
         {
+            try
+            { 
             foreach (char c in Path.GetInvalidFileNameChars())
             {
                 title = title.Replace(c, '_');
             }
             return title;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
         }
         public void DeleteData(string title)
         {
+            try
+            { 
             var sanitizedTitle = SanitizeFileName(title);
             string filePath = GetFilePath(sanitizedTitle);
 
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
+            }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -178,6 +232,18 @@ namespace Lab3.Services
                
                 Console.WriteLine($"Error seeding placeholder image: {ex.Message}");
              
+            }
+        }
+
+        public void CopyFile(string sourceFilePath, string destinationFilePath)
+        {
+            try
+            {
+            File.Copy(sourceFilePath, destinationFilePath, overwrite: true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
