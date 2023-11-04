@@ -35,7 +35,7 @@ namespace Lab3.Services
 
         }
 
-        private string GetFilePath(string title)
+        private string? GetFilePath(string title)
         {
             try 
             { 
@@ -49,7 +49,7 @@ namespace Lab3.Services
             }
         }
 
-        public async Task<QuizDAO> ReadData(string title)
+        public async Task<QuizDAO?> ReadData(string title)
         {
             try
             { 
@@ -77,19 +77,20 @@ namespace Lab3.Services
 
         public async Task WriteData(QuizDAO data, string title)
         {
-            try 
-            {             
-            var json = JsonConvert.SerializeObject(data, Formatting.Indented);
-            string filePath = GetFilePath(title);
-
-            using (StreamWriter writer = new StreamWriter(filePath))
+            try
             {
-                await writer.WriteAsync(json);
-            }
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                string filePath = GetFilePath(title);
+
+                using (StreamWriter writer = new StreamWriter(filePath))
+                {
+                    await writer.WriteAsync(json);
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                return;
             }
         }
 
@@ -115,7 +116,7 @@ namespace Lab3.Services
         }
 
 
-        public List<string> GetAllQuizTitles()
+        public List<string>? GetAllQuizTitles()
         {
             try
             { 
@@ -169,10 +170,11 @@ namespace Lab3.Services
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                return;
             }
         }
 
-        private string SanitizeFileName(string title)
+        private string? SanitizeFileName(string title)
         {
             try
             { 
@@ -203,6 +205,7 @@ namespace Lab3.Services
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                return;
             }
         }
 
@@ -231,7 +234,7 @@ namespace Lab3.Services
             {
                
                 Console.WriteLine($"Error seeding placeholder image: {ex.Message}");
-             
+                return;
             }
         }
 
@@ -239,11 +242,16 @@ namespace Lab3.Services
         {
             try
             {
-            File.Copy(sourceFilePath, destinationFilePath, overwrite: true);
+                if (!File.Exists(destinationFilePath))
+                {
+                    File.Copy(sourceFilePath, destinationFilePath);
+                }
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                return;
             }
         }
 
