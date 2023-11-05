@@ -54,7 +54,10 @@
                 IsEnabled="{Binding IsAnswerSelected}"
                 Padding="15,4,15,4"
                 Background="#007ACC"
-                Foreground="White">
+                Foreground="White"
+                Height="40">
+                
+
         </Button>
 
     </Grid>

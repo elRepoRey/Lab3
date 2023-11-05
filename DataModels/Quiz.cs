@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lab3.Services;
+using System.Windows;
 
 namespace Lab3.DataModels
 {
@@ -22,38 +23,84 @@ namespace Lab3.DataModels
 
         public Question GetRandomQuestion()
         {
-            var availableQuestions = _questions.Where(q => !_usedQuestions.Contains(q)).ToList();
+           try
+           {
+                var availableQuestions = _questions.Where(q => !_usedQuestions.Contains(q)).ToList();
 
-            if (!availableQuestions.Any())
-            {
-                _usedQuestions.Clear(); 
-                return null;
-            }
+                if (!availableQuestions.Any())
+                {
+                    _usedQuestions.Clear();
+                    return null;
+                }
 
-            var randomQuestion = availableQuestions[_random.Next(availableQuestions.Count)];
-            _usedQuestions.Add(randomQuestion);
-            return randomQuestion;
+                var randomQuestion = availableQuestions[_random.Next(availableQuestions.Count)];
+                _usedQuestions.Add(randomQuestion);
+                return randomQuestion;
+           }
+            catch (Exception ex)
+           {
+                throw new Exception(ex.Message);
+           }
+                     
         }
 
 
-        public void AddQuestion(string statement, int correctAnswer, string category, string imagePath , params string[] answers)
+        public void AddQuestion(string statement, int correctAnswer, string category, string imagePath, params string[] answers)
         {
-            var question = new Question(statement, answers, correctAnswer, category, imagePath);
-            var questionsList = _questions as List<Question>;
-            questionsList.Add(question);
+            try
+            {
+                var question = new Question(statement, answers, correctAnswer, category, imagePath);
+                var questionsList = _questions as List<Question>;
+                questionsList.Add(question);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
+          
         }
 
         public void RemoveQuestion(int index)
         {
-            var questionsList = _questions as List<Question>;
-            if (index >= 0 && index < questionsList.Count)
+            try
             {
-                questionsList.RemoveAt(index);
+                var questionsList = _questions as List<Question>;
+                if (index >= 0 && index < questionsList.Count)
+                {
+                    questionsList.RemoveAt(index);
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("The provided index is out of range.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                throw new ArgumentOutOfRangeException("The provided index is out of range.");
+                throw new Exception(ex.Message);
+            }
+           
+         
+        }
+        public void InsertQuestion(int index, Question question)
+        {
+            try
+            {
+                if (index >= 0 && index < _questions.Count())
+                {
+                    var questionsList = _questions as List<Question>;
+                    questionsList.Insert(index, question);
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("The provided index is out of range.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }
+  
 }

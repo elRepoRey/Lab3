@@ -41,10 +41,10 @@ namespace Lab3.Services
             }
 
             string[] reservedNames = {
-        "CON", "PRN", "AUX", "NUL",
-        "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-        "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
-    };
+            "CON", "PRN", "AUX", "NUL",
+            "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+            "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
+        };
 
             string titleWithoutExtension = Path.GetFileNameWithoutExtension(title);
             if (reservedNames.Contains(titleWithoutExtension, StringComparer.InvariantCultureIgnoreCase))
@@ -52,7 +52,7 @@ namespace Lab3.Services
                 return false;
             }
 
-            if (title.Length > 255) // You may need to adjust this for the full path length if necessary
+            if (title.Length > 255) 
             {
                 return false;
             }

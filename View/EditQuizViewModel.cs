@@ -266,11 +266,21 @@ namespace Lab3.View
 
                 var newQuestion = new Question(QuestionStatement, Answers.ToArray(), CorrectAnswer, Category, ImageFileName);
 
-                Global.CurrentQuiz.RemoveQuestion(_currentQuestionIndex);
+                
 
-                Global.CurrentQuiz.AddQuestion(newQuestion.Statement, newQuestion.CorrectAnswer, newQuestion.Category, newQuestion.ImageFileName, newQuestion.Answers);
+                if (Global.CurrentQuiz.Questions.Count() == 1 ||  Global.CurrentQuiz.Questions.Count() == CurrentQuestionIndex + 1)
+                {
+                    Global.CurrentQuiz.RemoveQuestion(_currentQuestionIndex);
+                    Global.CurrentQuiz.AddQuestion(newQuestion.Statement, newQuestion.CorrectAnswer, newQuestion.Category, newQuestion.ImageFileName, newQuestion.Answers);
 
+                }
+              else
+                {
+                    Global.CurrentQuiz.RemoveQuestion(_currentQuestionIndex);
+                    Global.CurrentQuiz.InsertQuestion(CurrentQuestionIndex, newQuestion);
+                }
 
+                    
                 string targetFileName = Path.GetFileName(ImagePath);
 
                 if (!string.IsNullOrEmpty(targetFileName))
@@ -301,10 +311,18 @@ namespace Lab3.View
 
         public void InitializeQuizData()
         {
-            _originalQuiz = Global.CurrentQuiz;
-            QuizTitle = Global.CurrentQuiz.Title;
-            LoadQuestionData();
-            CanSaveQuiz = false;
+           try
+            {
+                _originalQuiz = Global.CurrentQuiz;
+                QuizTitle = Global.CurrentQuiz.Title;
+                LoadQuestionData();
+                CanSaveQuiz = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
         }      
 
 

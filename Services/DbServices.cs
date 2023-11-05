@@ -69,8 +69,7 @@ namespace Lab3.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                return null;
+               throw new Exception(ex.Message);
             }
         }
 
@@ -89,8 +88,7 @@ namespace Lab3.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                return;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -132,8 +130,7 @@ namespace Lab3.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                return null;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -169,8 +166,7 @@ namespace Lab3.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                return;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -186,8 +182,7 @@ namespace Lab3.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                return null;
+                throw new Exception(ex.Message);
             }
         }
         public void DeleteData(string title)
@@ -204,8 +199,7 @@ namespace Lab3.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                return;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -250,8 +244,7 @@ namespace Lab3.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                return;
+                throw new Exception(ex.Message);
             }
         }
 

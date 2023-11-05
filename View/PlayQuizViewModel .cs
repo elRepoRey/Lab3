@@ -95,35 +95,51 @@ namespace Lab3.View
 
         public void NextQuestion()
         {
-            if (SelectedAnswerIndex == CurrentQuestion.CorrectAnswer)
+           try
             {
-                CorrectAnswersCount++;
-            }
+                if (SelectedAnswerIndex == CurrentQuestion.CorrectAnswer)
+                {
+                    CorrectAnswersCount++;
+                }
 
-            if (IsNextQuestionAvailable)
+                if (IsNextQuestionAvailable)
+                {
+                    CurrentQuestionIndex++;
+                    LoadQuestion();
+                    OnPropertyChanged(nameof(CurrentQuestionNumberText));
+                    OnPropertyChanged(nameof(IsNextQuestionAvailable));
+                }
+                else
+                {
+                    MessageBox.Show($"You have answered {CorrectAnswersCount} questions correctly out of {CurrentQuiz.Questions.Count()}.", "Quiz Completed", MessageBoxButton.OK, MessageBoxImage.Information);
+                    QuizCompleted?.Invoke();
+
+
+                    QuizCompleted = null;
+                }
+
+                SelectedAnswerIndex = null;
+            }
+            catch (Exception ex)
             {
-                CurrentQuestionIndex++;
-                LoadQuestion();
-                OnPropertyChanged(nameof(CurrentQuestionNumberText));
-                OnPropertyChanged(nameof(IsNextQuestionAvailable));
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            else
-            {
-                MessageBox.Show($"You have answered {CorrectAnswersCount} questions correctly out of {CurrentQuiz.Questions.Count()}.", "Quiz Completed", MessageBoxButton.OK, MessageBoxImage.Information);
-                QuizCompleted?.Invoke();
-
-                
-                QuizCompleted = null;
-            }
-
-            SelectedAnswerIndex = null; 
         }
 
         private void LoadQuestion()
         {
-            CurrentQuestion = CurrentQuiz.GetRandomQuestion();
-            ImagePath = Path.Combine(_dbService.GetImageFolderPath(), CurrentQuestion.ImageFileName);
-            OnPropertyChanged(nameof(CurrentQuestion));
+            try
+            {
+                CurrentQuestion = CurrentQuiz.GetRandomQuestion();
+                ImagePath = Path.Combine(_dbService.GetImageFolderPath(), CurrentQuestion.ImageFileName);
+                OnPropertyChanged(nameof(CurrentQuestion));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
         }
     }
 }
